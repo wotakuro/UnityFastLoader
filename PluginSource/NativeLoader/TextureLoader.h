@@ -16,7 +16,8 @@ namespace NativeLoader{
 	28		| 4			| The size of decompressedData
 	-------------------------------------------
 	32		| bodySize	| TextureRawData
-    32+body | 4         | CRC32 of TextureRawData
+	-------------------------------------------
+    last 4	| 4         | CRC32 of AllData
 	*/
 	class TextureLoader{
 	private:

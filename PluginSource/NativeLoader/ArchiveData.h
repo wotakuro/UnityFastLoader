@@ -21,7 +21,7 @@ namespace NativeLoader{
      ------------------------------------------------
      DataIndex[N]   |DataSize[N]| ArchivedData
      ----------- X NumberOfData ---------------------
-     Last 4         | 4         | CRC32 of ArchivedData Blocks
+     Last 4         | 4         | CRC32 of All data
      */
     class ArchivedData{
         int m_dataNum;
