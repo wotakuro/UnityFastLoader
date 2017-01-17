@@ -35,26 +35,44 @@ namespace FastLoader
                 string outputPath = Path.Combine(outputDir, path) + ".bin";
 
                 FileStream fs = File.OpenWrite(outputPath);
-                fs.Write(FastLoaderUtil.FastTextureHeader, 0, FastLoaderUtil.FastTextureHeader.Length);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt(texture.width), 0, 4);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt(texture.height), 0, 4);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt((int)texture.format), 0, 4);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt((int)0), 0, 4); // todo flag
-
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt(rawData.Length), 0, 4);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt(rawData.Length), 0, 4);
-                fs.Write(rawData, 0, rawData.Length);
-                fs.Write(FastLoaderUtil.GetByteArrayFromInt((int)0), 0, 4); // todo crc32
-
+                WriteTextureToStream(fs, texture, true);
                 fs.Close();
             }
         }
 
-        private int GetFlagFromTexture(Texture2D texture, bool isCompressed)
+        private void WriteTextureToStream(Stream stream,Texture2D texture ,bool isCompress)
         {
+            byte[] rawData = texture.GetRawTextureData();
+            byte[] writeData = null;
+            if (isCompress)
+            {
+                writeData = LZ4.LZ4Codec.Encode(rawData, 0, rawData.Length);
+            }
+            else
+            {
+                writeData = rawData;
+            }
+            byte[] fileData = new byte[writeData.Length + 32 ];
 
-            return 0;
+            int flag = FastLoaderUtil.GetFlagInt(isCompress,(texture.mipmapCount > 1), (texture.filterMode != FilterMode.Point));
+
+            // write header
+            System.Array.Copy(FastLoaderUtil.FastTextureHeader, 0, fileData, 0, FastLoaderUtil.FastTextureHeader.Length);
+            FastLoaderUtil.GetByteArrayFromInt(texture.width, fileData, 8);
+            FastLoaderUtil.GetByteArrayFromInt(texture.height, fileData, 12);
+            FastLoaderUtil.GetByteArrayFromInt((int)texture.format, fileData, 16);
+            FastLoaderUtil.GetByteArrayFromInt(flag, fileData, 20);
+            FastLoaderUtil.GetByteArrayFromInt(writeData.Length, fileData, 24);
+            FastLoaderUtil.GetByteArrayFromInt(rawData.Length, fileData, 28);
+
+            System.Array.Copy(writeData, 0, fileData, 32, writeData.Length);
+            stream.Write(fileData,0,fileData.Length);
+            // calc crc32
+            byte[] crc32 = new byte[4];
+            FastLoaderUtil.GetByteArrayFromInt(Crc32.GetValue(fileData, 0, fileData.Length), crc32, 0);
+            stream.Write(crc32, 0, crc32.Length);
         }
+
 
         private void CreateDirectory(string outputDir)
         {

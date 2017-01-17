@@ -14,14 +14,12 @@ namespace FastLoader
             0x46,0x53,0x54,0x41,0x52,0x43,0x00,0x00
         };
 
-        public static byte[] GetByteArrayFromInt(int val)
+        public static void GetByteArrayFromInt(int val,byte[] writeBuf,int index)
         {
-            byte[] ret = new byte[4];
             for (int i = 0; i < 4; ++i)
             {
-                ret[i] = (byte)((val >> (i * 8)) & 0xff);
+                writeBuf[i + index] = (byte)((val >> (i * 8)) & 0xff);
             }
-            return ret;
         }
 
         public static int GetIntFromByteArray(byte[] arr, int index)
@@ -32,6 +30,42 @@ namespace FastLoader
                 val += ( ((int)(arr[index + i]) << (i * 8)));
             }
             return val;
+        }
+
+        public static int GetFlagInt(bool compress,bool mipmap,bool lenear)
+        {
+            int val = 0;
+            if (compress) { val |= 0x01; }
+            if (mipmap) { val |= 0x02; }
+            if (lenear) { val |= 0x04; }
+            return val;
+        }
+
+        public static bool GetCompressFromFlag(int val)
+        {
+            return ((val & 0x01) != 0);
+        }
+        public static bool GetMipmapFromFlag(int val)
+        {
+            return ((val & 0x02) != 0);
+        }
+        public static bool GetLenearFromFlag(int val)
+        {
+            return ((val & 0x04) != 0);
+        }
+
+
+        public static bool CheckHeader(byte[] data, int index,byte [] header)
+        {
+            int length = header.Length;
+            for (int i = 0; i < length; ++i)
+            {
+                if (data[index + i] != header[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

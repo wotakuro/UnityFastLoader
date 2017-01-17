@@ -30,8 +30,10 @@ public class TestLoadComponent : MonoBehaviour {
 
         this.imageObj.texture = texture;
 
-        this.textObj.text = "Texture " + texture.width + "*" + texture.height + "\n"+
-            texture.format + ":" + texture.mipmapCount +"\n" + (endTime - stTime);
+        var sb = new System.Text.StringBuilder(64);
+        sb.Append("Texture ").Append( texture.width ).Append( "*").Append( texture.height).Append( "\n" ).
+            Append(texture.format ).Append( ":").Append( texture.mipmapCount) .Append("\ntime:") .Append( (endTime - stTime) );
+        this.textObj.text = sb.ToString();
     }
 
 

@@ -15,6 +15,27 @@ namespace FastLoader
         public int format;
         public int flags;
 
+        public bool compress
+        {
+            get
+            {
+                return FastLoaderUtil.GetCompressFromFlag(this.flags);
+            }
+        }
+        public bool mipmap
+        {
+            get
+            {
+                return FastLoaderUtil.GetMipmapFromFlag(this.flags);
+            }
+        }
+        public bool lenear
+        {
+            get
+            {
+                return FastLoaderUtil.GetLenearFromFlag(this.flags);
+            }
+        }
         public IntPtr rawData;
         public int dataSize;
         public int compressedSize;
@@ -31,12 +52,14 @@ namespace FastLoader
     public class TextureLoader
     {
         private byte[] bufferData;
+        private byte[] uncompressedBuffer;
 
         private TextureData textureData;
 
         public TextureLoader()
         {
             this.bufferData = new byte[16 * 1024 * 1024];
+            this.uncompressedBuffer = new byte[16 * 1024 * 1024];
             this.textureData = new TextureData();
         }
 
@@ -56,18 +79,25 @@ namespace FastLoader
 
         public Texture2D CreateTexture2DFromBuffer()
         {
-            this.LoadDataFromBuffer();
-
-            Texture2D tex = new Texture2D(textureData.width, textureData.heght, textureData.UnityFormat,false);
+            bool result = LoadDataFromBuffer();
+            if (!result)
+            {
+                return null;
+            }
+            Texture2D tex = new Texture2D(textureData.width, textureData.heght, 
+                textureData.UnityFormat,textureData.mipmap,textureData.lenear);
 
             tex.LoadRawTextureData(textureData.rawData, textureData.dataSize);
-            tex.Apply();
+            tex.Apply(textureData.mipmap, true);
             return tex;
         }
 
 
-        private void LoadDataFromBuffer()
+        private bool LoadDataFromBuffer()
         {
+            if( !FastLoaderUtil.CheckHeader( this.bufferData ,0, FastLoaderUtil.FastTextureHeader) ){
+                return false;
+            }
             textureData.width = FastLoaderUtil.GetIntFromByteArray(this.bufferData, 8);
             textureData.heght = FastLoaderUtil.GetIntFromByteArray(this.bufferData, 12);
             textureData.format = FastLoaderUtil.GetIntFromByteArray(this.bufferData, 16);
@@ -75,7 +105,16 @@ namespace FastLoader
             textureData.compressedSize = FastLoaderUtil.GetIntFromByteArray(this.bufferData, 24);
             textureData.dataSize = FastLoaderUtil.GetIntFromByteArray(this.bufferData, 28);
 
-            textureData.rawData = Marshal.UnsafeAddrOfPinnedArrayElement(this.bufferData, 32);
+            if (textureData.compress)
+            {
+                LZ4.LZ4Codec.Decode(this.bufferData, 32, textureData.compressedSize, this.uncompressedBuffer, 0,textureData.dataSize);
+                textureData.rawData = Marshal.UnsafeAddrOfPinnedArrayElement(this.uncompressedBuffer, 0);
+            }
+            else
+            {
+                textureData.rawData = Marshal.UnsafeAddrOfPinnedArrayElement(this.bufferData, 32);
+            }
+            return true;
 
         }
 

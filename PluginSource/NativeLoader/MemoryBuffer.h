@@ -11,7 +11,7 @@ namespace NativeLoader{
     public:
         static MemoryBuffer& Create(int size);
         
-        void* GetData(int index)const;
+        void* GetData(int offset)const;
         int GetDataSize()const;
         
         void ResetData();

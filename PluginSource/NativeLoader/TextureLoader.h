@@ -28,8 +28,6 @@ namespace NativeLoader{
 		int m_flags;
 		int m_bodySize;
 
-		void *m_workingMemory;
-		int m_workingMemorySize;
 		MemoryBuffer &m_buffer;
 
 	public:
@@ -37,32 +35,28 @@ namespace NativeLoader{
 		~TextureLoader();
 
 
-		int GetWidth()const;
-		int GetHeight()const;
-		int GetFormat()const;
-		int GetFlags()const;
-		int GetBodySize()const;
+		inline int GetWidth()const{
+			return m_width;
+		}
+		inline int GetHeight()const{
+			return m_height;
+		}
+		inline int GetFormat()const{
+			return m_format;
+		}
+		inline int GetFlags()const{
+			return m_flags;
+		}
+		inline int GetBodySize()const{
+			return m_bodySize;
+		}
+
+
 		void* GetRawData()const;
 
-        bool LoadFileHeader( FileLoaderStream *stream);
         bool LoadTexture( FileLoaderStream *stream);
-    private:
-        void LoadBody( FileStream * stream);
+	private:
+		bool LoadFileHeader(FileLoaderStream *stream);
+        bool LoadBody( FileStream * stream);
     };
-}
-
-extern "C"{
-    bool FastLoad_Mount_ArchiveFile(const char *file);
-    bool FastLoad_UnMount_ArchiveFile();
-    
-    bool FastLoad_Texture_LoadFile(int idx);
-    // call afeter "FastLoad_Texture_LoadFile"
-    //-----------
-	int FastLoad_Texture_GetWidth();
-	int FastLoad_Texture_GetHeight();
-	int FastLoad_Texture_GetFormat();
-	int FastLoad_Texture_GetFlags();
-	int FastLoad_Texture_GetBody();
-	void* FastLoad_Texture_GetRawData();
-    //-----------
 }

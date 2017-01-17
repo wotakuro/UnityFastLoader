@@ -6,10 +6,10 @@ MemoryBuffer &MemoryBuffer::Create(int size){
     return (*buffer);
 }
 
-void* MemoryBuffer::GetData(int index)const{
-    char *ptr = reinterpret_cast<char*>(m_workingMemory);
-    ptr = ptr + index;
-    return ptr;
+void* MemoryBuffer::GetData(int offset)const{
+    byte *ptr = reinterpret_cast<byte*>(m_workingMemory);
+    ptr = ptr + offset;
+    return reinterpret_cast<void*>(ptr);
 }
 int MemoryBuffer::GetDataSize()const{
     return m_ptrIndex;
