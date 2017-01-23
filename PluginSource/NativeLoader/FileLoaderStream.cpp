@@ -1,6 +1,7 @@
 #include "FileLoaderStream.h"
+#include "MemoryBuffer.h"
 
-using NativeLoader;
+using namespace NativeLoader;
 
 FileLoaderStream::FileLoaderStream():fp(NULL){
 }
@@ -23,12 +24,12 @@ void FileLoaderStream::Close(){
 
 int FileLoaderStream::ReadBlock(MemoryBuffer &writeBuffer,int size){
     if( fp == NULL){
-        return;
+        return -1;
     }
-    writeBuffer->PrepareForDynamicAppend(size);
+    writeBuffer.PrepareForDynamicAppend(size);
 
-    int ret = fread( writeBuffer->GetNextAppendPtr(),size,  1 , fp);
-    writeBuffer->NextPtr(size);
+    int ret = fread( writeBuffer.GetNextAppendPtr(),size,  1 , fp);
+    writeBuffer.NextPtr(size);
     
     return ret;
 }
@@ -37,12 +38,12 @@ void FileLoaderStream::SeekFromTop(int idx){
     if( fp == NULL){
         return;
     }
-    fseek(fp,inx , SEEK_SET);
+    fseek(fp,idx , SEEK_SET);
 }
 
 void FileLoaderStream::SeekRelative(int idx){
     if( fp == NULL){
         return;
     }
-    fseek(fp,inx , SEEK_CUR);
+    fseek(fp,idx , SEEK_CUR);
 }

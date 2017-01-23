@@ -1,9 +1,12 @@
 #include "TextureLoader.h"
 #include "FileLoaderStream.h"
+#include "MemoryBuffer.h"
 
-using NativeLoader;
+using namespace NativeLoader;
 
-TextureLoader::TextureLoader(MemoryBuffer& buffer, int bufferSize){
+TextureLoader::TextureLoader(MemoryBuffer& buffer):
+m_buffer(buffer)
+{
 }
 
 TextureLoader::~TextureLoader(){
@@ -11,7 +14,7 @@ TextureLoader::~TextureLoader(){
 
 
 void* TextureLoader::GetRawData()const{
-	return this->m_buffer.GetData(32);
+    return this->m_buffer.GetData(32);
 }
 
 bool TextureLoader::LoadTexture(FileLoaderStream *stream){
@@ -23,6 +26,6 @@ bool TextureLoader::LoadTexture(FileLoaderStream *stream){
 bool TextureLoader::LoadFileHeader(FileLoaderStream *stream){
 	this->m_buffer.ResetData();
 }
-bool TextureLoader::LoadBody(FileStream * stream){
+bool TextureLoader::LoadBody(FileLoaderStream * stream){
 }
 

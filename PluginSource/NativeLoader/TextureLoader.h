@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 namespace NativeLoader{
+    class FileLoaderStream;
+    class MemoryBuffer;
 
 	/***
 	TextureFormat
@@ -31,7 +33,7 @@ namespace NativeLoader{
 		MemoryBuffer &m_buffer;
 
 	public:
-		TextureLoader(MemoryBuffer& buffer, int bufferSize );
+		TextureLoader(MemoryBuffer& buffer );
 		~TextureLoader();
 
 
@@ -57,6 +59,6 @@ namespace NativeLoader{
         bool LoadTexture( FileLoaderStream *stream);
 	private:
 		bool LoadFileHeader(FileLoaderStream *stream);
-        bool LoadBody( FileStream * stream);
+        bool LoadBody( FileLoaderStream * stream);
     };
 }

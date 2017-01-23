@@ -1,9 +1,9 @@
 #include "LoaderUtil.h"
 
-using NativeLoader;
+using namespace NativeLoader;
 
 int LoaderUtil::GetInt(void *ptr){
-	byte *p_byte = reinterpret_cast<byte*>(ptr);
+	unsigned char *p_byte = reinterpret_cast<unsigned char*>(ptr);
 	
 	int val = (p_byte[0] << 0) +
 		(p_byte[1] << 8) +

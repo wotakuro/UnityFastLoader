@@ -1,13 +1,17 @@
 #include "MemoryBuffer.h"
-using NativeLoader;
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+using namespace NativeLoader;
 
 MemoryBuffer &MemoryBuffer::Create(int size){
-    MemoryBuffer *buffer = new MemoryBuffer( sixe );
+    MemoryBuffer *buffer = new MemoryBuffer( size );
     return (*buffer);
 }
 
 void* MemoryBuffer::GetData(int offset)const{
-    byte *ptr = reinterpret_cast<byte*>(m_workingMemory);
+    unsigned char *ptr = reinterpret_cast<unsigned char*>(m_workingMemory);
     ptr = ptr + offset;
     return reinterpret_cast<void*>(ptr);
 }
@@ -29,7 +33,7 @@ void MemoryBuffer::AppendData( const void *ptr,int size){
 
 void MemoryBuffer::PrepareForDynamicAppend(int size){
     if( m_ptrIndex + size > m_workingMemorySize ){
-        ReSize( m_ptrIndex + size );
+        this->Resize( m_ptrIndex + size );
     }
 }
 
@@ -51,7 +55,7 @@ void MemoryBuffer::Shrink(int size ){
     m_workingMemorySize = size;
 }
 
-void MemoryBuffer::ReSize(int size){
+void MemoryBuffer::Resize(int size){
     void *newWorking = malloc( size );
     memcpy( newWorking,m_workingMemory , GetDataSize() );
     free(m_workingMemory);
