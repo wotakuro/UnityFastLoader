@@ -25,14 +25,18 @@ void* TextureLoader::GetRawData()const{
 }
 
 bool TextureLoader::LoadTexture(FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer){
-	bool headerFlag = this->LoadFileHeader(stream,readBuffer);
+    bool headerFlag = this->LoadFileHeader(stream,readBuffer);
 	if (!headerFlag){ return false; }
-	bool bodyFlag = this->LoadBody(stream,readBuffer,deflateBuffer);
+    bool bodyFlag = this->LoadBody(stream,readBuffer,deflateBuffer);
 	return bodyFlag;
 }
 bool TextureLoader::LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBuffer){
 	readBuffer.ResetData();
     stream.ReadBlock( readBuffer, 32);
+    
+    if( !LoaderUtil::CheckHeaderSig(LoaderUtil::TEXTURE_HEADER_SIG, readBuffer.GetData(0), LoaderUtil::TEXTURE_HEAD_SIG_SIZE)){
+        return false;
+    }
     
     this->m_width = LoaderUtil::GetInt( readBuffer.GetData(8) );
     this->m_height = LoaderUtil::GetInt( readBuffer.GetData(12) );

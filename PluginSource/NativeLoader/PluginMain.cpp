@@ -32,6 +32,7 @@ extern "C"{
         stream.Open(file);
         g_nativeTextureLoader->LoadTexture(stream, *g_loadWorkMemory, g_uncompressWorkMemory);
         stream.Close();
+        return true;
     }
 	// call afeter "FastLoad_Texture_LoadFile"
 	//-----------

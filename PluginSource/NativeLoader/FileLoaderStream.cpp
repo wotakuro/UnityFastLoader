@@ -28,7 +28,7 @@ int FileLoaderStream::ReadBlock(MemoryBuffer &writeBuffer,int size){
     }
     writeBuffer.PrepareForDynamicAppend(size);
 
-    int ret = fread( writeBuffer.GetNextAppendPtr(),size,  1 , fp);
+    int ret = static_cast<int>( fread( writeBuffer.GetNextAppendPtr(),size,  1 , fp) );
     writeBuffer.NextPtr(size);
     
     return ret;
