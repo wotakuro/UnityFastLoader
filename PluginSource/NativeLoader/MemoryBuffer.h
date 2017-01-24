@@ -9,7 +9,7 @@ namespace NativeLoader{
         int m_ptrIndex;
         
     public:
-        static MemoryBuffer& Create(int size);
+        static MemoryBuffer* Create(int size);
         
         void* GetData(int offset)const;
         int GetDataSize()const;

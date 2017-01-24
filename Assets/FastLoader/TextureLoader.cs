@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿
+#if UNITY_IOS && !UNITY_EDITOR
+#define NATIVE_PLUGIN_LOAD
+#endif
+
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -51,24 +56,50 @@ namespace FastLoader
 
     public class TextureLoader
     {
+		#if !NATIVE_PLUGIN_LOAD
         private byte[] bufferData;
         private byte[] uncompressedBuffer;
+		#endif
+
+		#if NATIVE_PLUGIN_LOAD
+		[DllImport("__internal")]
+		static extern bool FastLoad_Texture_LoadFile(string file);
+		[DllImport("__internal")]
+		static extern int FastLoad_Texture_GetWidth();
+		[DllImport("__internal")]
+		static extern int FastLoad_Texture_GetHeight();
+		[DllImport("__internal")]
+		static extern int FastLoad_Texture_GetFormat();
+		[DllImport("__internal")]
+		static extern int FastLoad_Texture_GetBodySize();
+		[DllImport("__internal")]
+		static extern IntPtr FastLoad_Texture_GetRawData();
+		[DllImport("__internal")]
+		static extern int FastLoad_Texture_GetFlags();
+		#endif
+
 
         private TextureData textureData;
 
         public TextureLoader()
         {
+			#if !NATIVE_PLUGIN_LOAD
             this.bufferData = new byte[16 * 1024 * 1024];
             this.uncompressedBuffer = new byte[16 * 1024 * 1024];
+			#endif
             this.textureData = new TextureData();
         }
 
         public void LoadToBuffer(string path)
         {
+			#if NATIVE_PLUGIN_LOAD
+			FastLoad_Texture_LoadFile( path );
+			#else
             using (FileStream fs = File.OpenRead(path))
             {
                 int read = fs.Read(bufferData, 0, bufferData.Length);
             }
+			#endif
         }
 
 
@@ -95,6 +126,16 @@ namespace FastLoader
 
         private bool LoadDataFromBuffer()
         {
+			#if NATIVE_PLUGIN_LOAD
+			textureData.width = FastLoad_Texture_GetWidth();
+			textureData.heght = FastLoad_Texture_GetHeight();
+			textureData.format = FastLoad_Texture_GetFormat();
+			textureData.flags = FastLoad_Texture_GetFlags();
+			textureData.compressedSize = 0;
+			textureData.dataSize = FastLoad_Texture_GetBodySize();
+			textureData.rawData = FastLoad_Texture_GetRawData();
+
+			#else
             if( !FastLoaderUtil.CheckHeader( this.bufferData ,0, FastLoaderUtil.FastTextureHeader) ){
                 return false;
             }
@@ -114,8 +155,8 @@ namespace FastLoader
             {
                 textureData.rawData = Marshal.UnsafeAddrOfPinnedArrayElement(this.bufferData, 32);
             }
+			#endif
             return true;
-
         }
 
     }

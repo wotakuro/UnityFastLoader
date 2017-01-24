@@ -5,9 +5,9 @@
 
 using namespace NativeLoader;
 
-MemoryBuffer &MemoryBuffer::Create(int size){
+MemoryBuffer *MemoryBuffer::Create(int size){
     MemoryBuffer *buffer = new MemoryBuffer( size );
-    return (*buffer);
+    return (buffer);
 }
 
 void* MemoryBuffer::GetData(int offset)const{
@@ -43,6 +43,7 @@ void *MemoryBuffer::GetNextAppendPtr(){
 
 int MemoryBuffer::NextPtr( int size ){
     m_ptrIndex += size;
+    return m_ptrIndex;
 }
 
 
@@ -67,6 +68,7 @@ void MemoryBuffer::Resize(int size){
 void MemoryBuffer::IncReferenceCount(){
     ++ m_referenceCount;
 }
+
 void MemoryBuffer::DecReferenceCount(){
     -- m_referenceCount;
     if( m_referenceCount <= 0 ){

@@ -15,7 +15,7 @@ namespace NativeLoader{
 	16		| 4			| TextureFormat
 	20		| 4			| Flags(lz4,encrypt,mipmap,flagment,)
 	24		| 4			| The size of bodyData
-	28		| 4			| The size of decompressedData
+	28		| 4			| The size of uncompressedData
 	-------------------------------------------
 	32		| bodySize	| TextureRawData
 	-------------------------------------------
@@ -28,12 +28,13 @@ namespace NativeLoader{
 
 		int m_format;
 		int m_flags;
-		int m_bodySize;
-
-		MemoryBuffer &m_buffer;
-
+        int m_compressedSize;
+		int m_uncompressedSize;
+        void *m_bodyPtr;
+        
+        MemoryBuffer *m_decompressWorking;
 	public:
-		TextureLoader(MemoryBuffer& buffer );
+		TextureLoader();
 		~TextureLoader();
 
 
@@ -50,15 +51,15 @@ namespace NativeLoader{
 			return m_flags;
 		}
 		inline int GetBodySize()const{
-			return m_bodySize;
+			return m_uncompressedSize;
 		}
 
 
 		void* GetRawData()const;
 
-        bool LoadTexture( FileLoaderStream *stream);
+        bool LoadTexture( FileLoaderStream &stream, MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
 	private:
-		bool LoadFileHeader(FileLoaderStream *stream);
-        bool LoadBody( FileLoaderStream * stream);
+		bool LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBuffer);
+        bool LoadBody( FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
     };
 }
