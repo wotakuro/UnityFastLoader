@@ -62,19 +62,19 @@ namespace FastLoader
 		#endif
 
 		#if NATIVE_PLUGIN_LOAD
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern bool FastLoad_Texture_LoadFile(string file);
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern int FastLoad_Texture_GetWidth();
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern int FastLoad_Texture_GetHeight();
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern int FastLoad_Texture_GetFormat();
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern int FastLoad_Texture_GetBodySize();
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern IntPtr FastLoad_Texture_GetRawData();
-		[DllImport("__internal")]
+		[DllImport("__Internal")]
 		static extern int FastLoad_Texture_GetFlags();
 		#endif
 

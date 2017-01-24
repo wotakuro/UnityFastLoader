@@ -25,6 +25,7 @@ public class TestLoadComponent : MonoBehaviour {
         float stTime = Time.realtimeSinceStartup;
 
         loader.LoadToBuffer(path);
+		float loadTime = Time.realtimeSinceStartup;
         var texture = loader.CreateTexture2DFromBuffer();
         float endTime = Time.realtimeSinceStartup;
 
@@ -32,7 +33,9 @@ public class TestLoadComponent : MonoBehaviour {
 
         var sb = new System.Text.StringBuilder(64);
         sb.Append("Texture ").Append( texture.width ).Append( "*").Append( texture.height).Append( "\n" ).
-            Append(texture.format ).Append( ":").Append( texture.mipmapCount) .Append("\ntime:") .Append( (endTime - stTime) );
+            Append(texture.format ).Append( ":").Append( texture.mipmapCount)
+			.Append("\nloadtime:") .Append( (loadTime - stTime) )
+			.Append("\nAlltime:") .Append( (endTime - stTime) );
         this.textObj.text = sb.ToString();
     }
 
