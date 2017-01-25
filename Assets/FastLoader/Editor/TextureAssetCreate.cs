@@ -35,7 +35,7 @@ namespace FastLoader
                 string outputPath = Path.Combine(outputDir, path) + ".bin";
 
                 FileStream fs = File.OpenWrite(outputPath);
-                WriteTextureToStream(fs, texture, true);
+                WriteTextureToStream(fs, texture, false);
                 fs.Close();
             }
         }
