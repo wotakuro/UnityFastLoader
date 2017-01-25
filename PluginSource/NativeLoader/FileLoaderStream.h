@@ -5,7 +5,7 @@ namespace NativeLoader{
     class MemoryBuffer;
     
     class FileLoaderStream{
-        FILE *fp;
+        int fd;
     public:
         FileLoaderStream();
         ~FileLoaderStream();
