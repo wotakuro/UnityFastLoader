@@ -108,7 +108,7 @@ namespace FastLoader
             return true;
         }
 
-        public Texture2D CreateTexture2DFromBuffer()
+		public Texture2D CreateTexture2DFromBuffer(bool reuseFlag=false)
         {
             bool result = LoadDataFromBuffer();
             if (!result)
@@ -119,9 +119,21 @@ namespace FastLoader
                 textureData.UnityFormat,textureData.mipmap,textureData.lenear);
 
             tex.LoadRawTextureData(textureData.rawData, textureData.dataSize);
-            tex.Apply(textureData.mipmap, true);
+			tex.Apply(textureData.mipmap, !reuseFlag);
             return tex;
         }
+
+		public bool ReUseTexture(Texture2D tex ){
+			bool result = LoadDataFromBuffer();
+			if (!result) {
+				return false;
+			}
+
+
+			tex.LoadRawTextureData(textureData.rawData, textureData.dataSize);
+			tex.Apply(textureData.mipmap, false);
+			return true;
+		}
 
 
         private bool LoadDataFromBuffer()
