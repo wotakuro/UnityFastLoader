@@ -14,6 +14,7 @@ public class TestLoadComponent : MonoBehaviour {
 	void Start () {
 		StartCoroutine(CopyData("test.jpg.bin"));
 		StartCoroutine(CopyData("test.bundle"));
+		StartCoroutine(CopyData("reuse.jpg.bin"));
 	}
 
 
@@ -46,7 +47,7 @@ public class TestLoadComponent : MonoBehaviour {
 		}
 		Texture2D texture = imageObj.texture as Texture2D;
 			
-		string path = Path.Combine( Application.temporaryCachePath , "test.jpg.bin");
+		string path = Path.Combine( Application.temporaryCachePath , "reuse.jpg.bin");
 
 		float stTime = Time.realtimeSinceStartup;
 
