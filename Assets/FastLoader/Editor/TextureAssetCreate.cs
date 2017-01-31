@@ -40,7 +40,7 @@ namespace FastLoader
                 string outputPath = Path.Combine(outputDir, path) + ".bin";
 
                 FileStream fs = File.OpenWrite(outputPath);
-                WriteTextureToStream(fs, texture, true);
+				WriteTextureToStream(fs, texture, true , 1024* 256);
                 fs.Close();
 				// Copy To Streaming
 				string copyFile = Path.Combine(Application.streamingAssetsPath, Path.GetFileName(outputPath) );
@@ -49,7 +49,7 @@ namespace FastLoader
             }
         }
 
-        private void WriteTextureToStream(Stream stream,Texture2D texture ,bool isCompress)
+		private void WriteTextureToStream(Stream stream,Texture2D texture ,bool isCompress,int blockSize)
         {
             byte[] rawData = texture.GetRawTextureData();
             byte[] writeData = null;
@@ -57,7 +57,7 @@ namespace FastLoader
             if (isCompress)
             {
 				writeData = this.lz4Buffer;
-				writeDataSize = Lz4Util.Encode (rawData, 0, rawData.Length, writeData, 0, writeData.Length);
+				writeDataSize = Lz4Util.Encode (blockSize , rawData, 0, rawData.Length, writeData, 0, writeData.Length);
 				Debug.Log ("Write " + rawData.Length + "->" + writeDataSize);
             }
             else

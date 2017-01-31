@@ -6,8 +6,6 @@ namespace FastLoader
 {
 	public class Lz4Util
 	{
-		public static int BlockSize = 128 * 1024;
-
 		/*
 		 * -----------------
 		 * | 0 | 4 | blockNum
@@ -19,9 +17,9 @@ namespace FastLoader
 		 * blockData 
 		 * ---------------
 		 */
-		public static int Encode( byte []src ,int srcOffset , int srcLength ,byte []dest , int destOffset,int destLength ){
+		public static int Encode( int blockSize, byte []src ,int srcOffset , int srcLength ,byte []dest , int destOffset,int destLength ){
 
-			int blockNum = (src.Length + BlockSize -1 )/ BlockSize;
+			int blockNum = (src.Length + blockSize -1 )/ blockSize;
 			int headerSize = 8 + blockNum * 8;
 
 			FastLoaderUtil.GetByteArrayFromInt (blockNum, dest, destOffset + 0);
@@ -31,11 +29,11 @@ namespace FastLoader
 			int currentDestOffset = destOffset + headerSize;
 			for (int i = 0; i < blockNum; ++i) {
 				// write to data
-				int originSize = BlockSize;
-				if ( BlockSize + (i * BlockSize) > srcLength ) {
-					originSize = srcLength - (i * BlockSize);
+				int originSize = blockSize;
+				if ( blockSize + (i * blockSize) > srcLength ) {
+					originSize = srcLength - (i * blockSize);
 				}
-				int compressedSize = LZ4Codec.Encode (src, srcOffset + ( i * BlockSize), originSize, dest, 
+				int compressedSize = LZ4Codec.Encode (src, srcOffset + ( i * blockSize), originSize, dest, 
 					currentDestOffset, destLength - currentDestOffset + destOffset);
 				// write to header block
 				FastLoaderUtil.GetByteArrayFromInt ( originSize, dest, destOffset + 8 + (i * 8) + 0);

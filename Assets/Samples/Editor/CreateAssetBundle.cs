@@ -7,7 +7,7 @@ public class CreateAssetBundle {
 	[MenuItem("Tools/CreateAssetBundle")]
 	public static void Exec(){
 		BuildPipeline.BuildAssetBundles (Application.streamingAssetsPath,
-			BuildAssetBundleOptions.UncompressedAssetBundle,
+			BuildAssetBundleOptions.ChunkBasedCompression,
 			EditorUserBuildSettings.activeBuildTarget);
 	}
 }
