@@ -1,6 +1,9 @@
 #include "LoaderUtil.h"
 #include "3rd_party/lz4/lz4.h"
 
+#include <mach/mach_time.h>
+#include <stdio.h>
+
 using namespace NativeLoader;
 
 const char LoaderUtil::TEXTURE_HEADER_SIG[8] ={
@@ -8,8 +11,8 @@ const char LoaderUtil::TEXTURE_HEADER_SIG[8] ={
 };
 
 
-int LoaderUtil::GetInt(void *ptr){
-	unsigned char *p_byte = reinterpret_cast<unsigned char*>(ptr);
+int LoaderUtil::GetInt(const void *ptr){
+	const unsigned char *p_byte = reinterpret_cast<const unsigned char*>(ptr);
 	
 	int val = (p_byte[0] << 0) +
 		(p_byte[1] << 8) +
@@ -20,7 +23,41 @@ int LoaderUtil::GetInt(void *ptr){
 
 
 bool LoaderUtil::Uncompress(const void *src,void *dest , int srcSize , int destSize){
-    int result = LZ4_decompress_safe(reinterpret_cast<const char*>(src),reinterpret_cast<char*>(dest),srcSize,destSize);
+    uint64_t start, elapsed,end;
+    start = mach_absolute_time();
+    
+    const char *currentReadBody = reinterpret_cast<const char*>(src);
+    const char *currentReadHeader = reinterpret_cast<const char*>(src);
+    char *currentWriteDest = reinterpret_cast<char*>(dest);
+    int blockNum = LoaderUtil::GetInt( src );
+    int headerSize = 8 + blockNum * 8;
+
+    currentReadHeader += 8;
+    currentReadBody += headerSize;
+    
+    int result = 0;
+    for( int i = 0 ; i < blockNum; ++ i ){
+        int originSize = LoaderUtil::GetInt(currentReadHeader);
+        currentReadHeader += 4;
+        int compressedSize = LoaderUtil::GetInt(currentReadHeader);
+        currentReadHeader += 4;
+
+        int tmp = LZ4_decompress_safe(currentReadBody,currentWriteDest,compressedSize,originSize);
+
+        currentWriteDest += originSize;
+        currentReadBody += compressedSize;
+        result |= tmp;
+    }
+    
+    end = mach_absolute_time();
+    
+    mach_timebase_info_data_t base;
+    mach_timebase_info(&base);
+    elapsed = (end - start)*base.numer/base.denom;
+    
+    elapsed /= 1000;
+    elapsed /= 1000;
+
     return (result == 0 );
 }
 

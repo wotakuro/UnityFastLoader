@@ -1,56 +1,49 @@
 #include "FileLoaderStream.h"
 #include "MemoryBuffer.h"
 
-#include <fcntl.h>
-#include <unistd.h>
-
-
-
 using namespace NativeLoader;
 
-FileLoaderStream::FileLoaderStream():fd(-1){
+FileLoaderStream::FileLoaderStream():fp(NULL){
 }
 
 FileLoaderStream::~FileLoaderStream(){
     Close();
-    
 }
 
 void FileLoaderStream::Open(const char *file){
-
     this->Close();
-    fd = open(file,O_RDONLY);
-
+    fp = fopen( file ,"rb" );
 }
 
 void FileLoaderStream::Close(){
-    if( fd >= 0){
-        close(fd);
-        fd = -1;
+    if( fp != NULL){
+        fclose(fp);
+        fp = NULL;
     }
 }
 
 int FileLoaderStream::ReadBlock(MemoryBuffer &writeBuffer,int size){
-    if( fd < 0 ){
+    if( fp == NULL){
         return -1;
     }
     writeBuffer.PrepareForDynamicAppend(size);
-    size_t ret = read(fd, writeBuffer.GetNextAppendPtr(), size );
+
+    int ret = static_cast<int>( fread( writeBuffer.GetNextAppendPtr(),size,  1 , fp) );
     writeBuffer.NextPtr(size);
     
-    return (int)ret;
+    return ret;
 }
 
 void FileLoaderStream::SeekFromTop(int idx){
-    if( fd < 0 ){
+    if( fp == NULL){
         return;
     }
-    lseek(fd, SEEK_SET, idx);
+    fseek(fp,idx , SEEK_SET);
 }
 
 void FileLoaderStream::SeekRelative(int idx){
-    if( fd < 0){
+    if( fp == NULL){
         return;
     }
-    lseek(fd, SEEK_CUR, idx);
+    fseek(fp,idx , SEEK_CUR);
 }

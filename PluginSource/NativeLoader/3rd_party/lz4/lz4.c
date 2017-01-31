@@ -1,3 +1,4 @@
+#if 1
 /*
    LZ4 - Fast LZ compression algorithm
    Copyright (C) 2011-2016, Yann Collet.
@@ -41,9 +42,7 @@
  * Select how default compression functions will allocate memory for their hash table,
  * in memory stack (0:default, fastest), or in memory heap (1:requires malloc()).
  */
-#ifndef HEAPMODE
 #  define HEAPMODE 0
-#endif
 
 /*
  * ACCELERATION_DEFAULT :
@@ -1461,3 +1460,5 @@ int LZ4_decompress_fast_withPrefix64k(const char* source, char* dest, int origin
 }
 
 #endif   /* LZ4_COMMONDEFS_ONLY */
+
+#endif

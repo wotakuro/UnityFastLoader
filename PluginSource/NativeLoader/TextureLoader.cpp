@@ -51,16 +51,20 @@ bool TextureLoader::LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBu
 
 bool TextureLoader::LoadBody(FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer){
     readBuffer.ResetData();
-    stream.ReadBlock(readBuffer, this->m_compressedSize) ;
     if( !( m_flags &0x01 )){
+        stream.ReadBlock(readBuffer, this->m_compressedSize) ;
         this->m_bodyPtr = readBuffer.GetData(0);
     }
     else{
+        // compressed format
+        stream.ReadBlock(readBuffer, this->m_compressedSize) ;
         void *ptr = NULL;
         deflateBuffer->ResetData();
         deflateBuffer->PrepareForDynamicAppend( this->m_uncompressedSize);
         ptr = deflateBuffer->GetNextAppendPtr();
-        LoaderUtil::Uncompress( readBuffer.GetData(0), ptr , this->m_compressedSize, this->m_uncompressedSize);
+        LoaderUtil::Uncompress( readBuffer.GetData(0), ptr ,
+                               this->m_compressedSize,
+                               this->m_uncompressedSize);
         this->m_bodyPtr = ptr;
     }
     return true;
