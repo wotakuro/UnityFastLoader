@@ -160,7 +160,7 @@ namespace FastLoader
 
             if (textureData.compress)
             {
-                LZ4.LZ4Codec.Decode(this.bufferData, 32, textureData.compressedSize, this.uncompressedBuffer, 0,textureData.dataSize);
+				Lz4Util.Decode(this.bufferData, 32, textureData.compressedSize, this.uncompressedBuffer, 0,textureData.dataSize);
                 textureData.rawData = Marshal.UnsafeAddrOfPinnedArrayElement(this.uncompressedBuffer, 0);
             }
             else
