@@ -1,5 +1,5 @@
 ﻿
-#if UNITY_IOS && !UNITY_EDITOR
+#if( UNITY_IOS || UNITY_ANDROID ) && !UNITY_EDITOR
 #define NATIVE_PLUGIN_LOAD
 #endif
 
@@ -62,21 +62,28 @@ namespace FastLoader
 		#endif
 
 		#if NATIVE_PLUGIN_LOAD
-		[DllImport("__Internal")]
+#if UNITY_ANDROID
+        private const string DllImportName = "libnativeloader";
+#else 
+        private const string DllImportName = "__Internal";
+
+#endif
+
+		[DllImport( DllImportName )]
 		static extern bool FastLoad_Texture_LoadFile(string file);
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetWidth();
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetHeight();
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetFormat();
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetBodySize();
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern IntPtr FastLoad_Texture_GetRawData();
-		[DllImport("__Internal")]
+		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetFlags();
-		#endif
+#endif
 
 
         private TextureData textureData;
