@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C59943D61E4225F300544FFA /* NativeLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C59943D51E4225F300544FFA /* NativeLoader.m */; };
-		C59943D71E4225F300544FFA /* NativeLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C59943D41E4225F300544FFA /* NativeLoader.h */; };
+		C59943E81E42261A00544FFA /* ArchiveData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943DD1E42261A00544FFA /* ArchiveData.cpp */; };
+		C59943EA1E42261A00544FFA /* FileLoaderStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943DF1E42261A00544FFA /* FileLoaderStream.cpp */; };
+		C59943EC1E42261A00544FFA /* LoaderUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E11E42261A00544FFA /* LoaderUtil.cpp */; };
+		C59943EE1E42261A00544FFA /* MemoryBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E31E42261A00544FFA /* MemoryBuffer.cpp */; };
+		C59943F01E42261A00544FFA /* PluginMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E51E42261A00544FFA /* PluginMain.cpp */; };
+		C59943F11E42261A00544FFA /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E61E42261A00544FFA /* TextureLoader.cpp */; };
+		C59943F51E42264A00544FFA /* lz4.c in Sources */ = {isa = PBXBuildFile; fileRef = C59943F31E42264A00544FFA /* lz4.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +23,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				C59943D71E4225F300544FFA /* NativeLoader.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,8 +30,19 @@
 
 /* Begin PBXFileReference section */
 		C59943D11E4225F300544FFA /* libNativeLoader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNativeLoader.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C59943D41E4225F300544FFA /* NativeLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeLoader.h; sourceTree = "<group>"; };
-		C59943D51E4225F300544FFA /* NativeLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativeLoader.m; sourceTree = "<group>"; };
+		C59943DD1E42261A00544FFA /* ArchiveData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ArchiveData.cpp; path = ../../src/ArchiveData.cpp; sourceTree = "<group>"; };
+		C59943DE1E42261A00544FFA /* ArchiveData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArchiveData.h; path = ../../src/ArchiveData.h; sourceTree = "<group>"; };
+		C59943DF1E42261A00544FFA /* FileLoaderStream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileLoaderStream.cpp; path = ../../src/FileLoaderStream.cpp; sourceTree = "<group>"; };
+		C59943E01E42261A00544FFA /* FileLoaderStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FileLoaderStream.h; path = ../../src/FileLoaderStream.h; sourceTree = "<group>"; };
+		C59943E11E42261A00544FFA /* LoaderUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LoaderUtil.cpp; path = ../../src/LoaderUtil.cpp; sourceTree = "<group>"; };
+		C59943E21E42261A00544FFA /* LoaderUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoaderUtil.h; path = ../../src/LoaderUtil.h; sourceTree = "<group>"; };
+		C59943E31E42261A00544FFA /* MemoryBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MemoryBuffer.cpp; path = ../../src/MemoryBuffer.cpp; sourceTree = "<group>"; };
+		C59943E41E42261A00544FFA /* MemoryBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MemoryBuffer.h; path = ../../src/MemoryBuffer.h; sourceTree = "<group>"; };
+		C59943E51E42261A00544FFA /* PluginMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginMain.cpp; path = ../../src/PluginMain.cpp; sourceTree = "<group>"; };
+		C59943E61E42261A00544FFA /* TextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TextureLoader.cpp; path = ../../src/TextureLoader.cpp; sourceTree = "<group>"; };
+		C59943E71E42261A00544FFA /* TextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextureLoader.h; path = ../../src/TextureLoader.h; sourceTree = "<group>"; };
+		C59943F31E42264A00544FFA /* lz4.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = lz4.c; path = ../../src/3rd_party/lz4/lz4.c; sourceTree = "<group>"; };
+		C59943F41E42264A00544FFA /* lz4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = lz4.h; path = ../../src/3rd_party/lz4/lz4.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +59,19 @@
 		C59943C81E4225F300544FFA = {
 			isa = PBXGroup;
 			children = (
+				C59943F31E42264A00544FFA /* lz4.c */,
+				C59943F41E42264A00544FFA /* lz4.h */,
+				C59943DD1E42261A00544FFA /* ArchiveData.cpp */,
+				C59943DE1E42261A00544FFA /* ArchiveData.h */,
+				C59943DF1E42261A00544FFA /* FileLoaderStream.cpp */,
+				C59943E01E42261A00544FFA /* FileLoaderStream.h */,
+				C59943E11E42261A00544FFA /* LoaderUtil.cpp */,
+				C59943E21E42261A00544FFA /* LoaderUtil.h */,
+				C59943E31E42261A00544FFA /* MemoryBuffer.cpp */,
+				C59943E41E42261A00544FFA /* MemoryBuffer.h */,
+				C59943E51E42261A00544FFA /* PluginMain.cpp */,
+				C59943E61E42261A00544FFA /* TextureLoader.cpp */,
+				C59943E71E42261A00544FFA /* TextureLoader.h */,
 				C59943D31E4225F300544FFA /* NativeLoader */,
 				C59943D21E4225F300544FFA /* Products */,
 			);
@@ -60,8 +88,6 @@
 		C59943D31E4225F300544FFA /* NativeLoader */ = {
 			isa = PBXGroup;
 			children = (
-				C59943D41E4225F300544FFA /* NativeLoader.h */,
-				C59943D51E4225F300544FFA /* NativeLoader.m */,
 			);
 			path = NativeLoader;
 			sourceTree = "<group>";
@@ -124,7 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C59943D61E4225F300544FFA /* NativeLoader.m in Sources */,
+				C59943F51E42264A00544FFA /* lz4.c in Sources */,
+				C59943E81E42261A00544FFA /* ArchiveData.cpp in Sources */,
+				C59943EA1E42261A00544FFA /* FileLoaderStream.cpp in Sources */,
+				C59943EC1E42261A00544FFA /* LoaderUtil.cpp in Sources */,
+				C59943EE1E42261A00544FFA /* MemoryBuffer.cpp in Sources */,
+				C59943F01E42261A00544FFA /* PluginMain.cpp in Sources */,
+				C59943F11E42261A00544FFA /* TextureLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +187,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_NS_ASSERTIONS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -173,7 +206,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -214,6 +247,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -223,6 +257,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = A8QB9X453U;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -233,6 +268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = A8QB9X453U;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -258,6 +294,7 @@
 				C59943DC1E4225F300544FFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
