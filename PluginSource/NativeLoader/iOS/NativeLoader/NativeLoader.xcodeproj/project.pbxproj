@@ -14,15 +14,17 @@
 		C59943F01E42261A00544FFA /* PluginMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E51E42261A00544FFA /* PluginMain.cpp */; };
 		C59943F11E42261A00544FFA /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C59943E61E42261A00544FFA /* TextureLoader.cpp */; };
 		C59943F51E42264A00544FFA /* lz4.c in Sources */ = {isa = PBXBuildFile; fileRef = C59943F31E42264A00544FFA /* lz4.c */; };
+		C5B4C1BD1E4A315F00EA2353 /* libNativeLoader.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = C59943D11E4225F300544FFA /* libNativeLoader.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C59943CF1E4225F300544FFA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			buildActionMask = 12;
+			dstPath = "lib/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				C5B4C1BD1E4A315F00EA2353 /* libNativeLoader.a in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +259,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = A8QB9X453U;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"UNITY_IOS=1",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -268,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = A8QB9X453U;
+				GCC_PREPROCESSOR_DEFINITIONS = "UNITY_IOS=1";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

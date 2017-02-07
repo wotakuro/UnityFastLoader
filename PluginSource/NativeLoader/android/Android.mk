@@ -8,7 +8,7 @@ LOCAL_PATH := $(call my-dir)
 LOCAL_ARM_MODE  := arm
 LOCAL_PATH      := $(NDK_PROJECT_PATH)
 LOCAL_MODULE    := nativeloader
-LOCAL_CFLAGS    := -Werror
+LOCAL_CFLAGS    := -Werror -DUNITY_ANDROID
 LOCAL_SRC_FILES := ../src/3rd_party/lz4/lz4.c
 
 ifeq ($(HOST_OS),windows)
