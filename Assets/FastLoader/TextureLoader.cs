@@ -83,6 +83,10 @@ namespace FastLoader
 		static extern IntPtr FastLoad_Texture_GetRawData();
 		[DllImport( DllImportName )]
 		static extern int FastLoad_Texture_GetFlags();
+
+
+		[DllImport( DllImportName )]
+		static extern IntPtr FastLoad_Texture_Create_OpenGL();
 #endif
 
 
@@ -122,11 +126,24 @@ namespace FastLoader
             {
                 return null;
             }
-            Texture2D tex = new Texture2D(textureData.width, textureData.heght, 
+
+			Texture2D tex = null;
+			#if NATIVE_PLUGIN_LOAD
+			// native load
+
+			tex = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
+				textureData.UnityFormat,textureData.mipmap,textureData.lenear,
+				FastLoad_Texture_Create_OpenGL() );
+			tex.UpdateExternalTexture(tex.GetNativeTexturePtr() );
+			tex.filterMode = FilterMode.Bilinear;
+			tex.wrapMode = TextureWrapMode.Repeat;
+			#else
+            tex = new Texture2D(textureData.width, textureData.heght, 
                 textureData.UnityFormat,textureData.mipmap,textureData.lenear);
 
             tex.LoadRawTextureData(textureData.rawData, textureData.dataSize);
 			tex.Apply(textureData.mipmap, !reuseFlag);
+			#endif
             return tex;
         }
 

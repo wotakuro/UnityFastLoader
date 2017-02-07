@@ -72,6 +72,14 @@ extern "C"{
         }
         return NULL;
     }
+#ifdef USE_OPEN_GL
+    GLuint FastLoad_Texture_Create_OpenGL(){
+        if( g_nativeTextureLoader ){
+            return g_nativeTextureLoader->CreateRawTextureWithOpenGL();
+        }
+        return NULL;
+    }
+#endif
 	//-----------
 }
 

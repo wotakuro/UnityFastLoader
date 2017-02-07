@@ -24,14 +24,51 @@ void* TextureLoader::GetRawData()const{
     return m_bodyPtr;
 }
 
+
+#ifdef USE_OPEN_GL
+
+GLuint TextureLoader::CreateRawTextureWithOpenGL(){
+    
+    
+    GLint curGLTex = 0;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &curGLTex);
+    
+    GLuint tex;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    
+    
+     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+     m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+     m_bodyPtr);
+    /*
+    glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG,
+                           m_width, m_height, 0, m_uncompressedSize , m_bodyPtr);
+     */
+    
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    
+    glBindTexture(GL_TEXTURE_2D, curGLTex);
+    return tex;
+}
+#endif
+
+
 bool TextureLoader::LoadTexture(FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer){
     bool headerFlag = this->LoadFileHeader(stream,readBuffer);
-	if (!headerFlag){ return false; }
+    if (!headerFlag){ return false; }
     bool bodyFlag = this->LoadBody(stream,readBuffer,deflateBuffer);
-	return bodyFlag;
+    return bodyFlag;
 }
+
+
+
 bool TextureLoader::LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBuffer){
-	readBuffer.ResetData();
+    readBuffer.ResetData();
     stream.ReadBlock( readBuffer, 32);
     
     if( !LoaderUtil::CheckHeaderSig(LoaderUtil::TEXTURE_HEADER_SIG, readBuffer.GetData(0), LoaderUtil::TEXTURE_HEAD_SIG_SIZE)){
@@ -42,7 +79,7 @@ bool TextureLoader::LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBu
     this->m_height = LoaderUtil::GetInt( readBuffer.GetData(12) );
     this->m_format = LoaderUtil::GetInt( readBuffer.GetData(16) );
     this->m_flags = LoaderUtil::GetInt( readBuffer.GetData(20) );
-
+    
     this->m_compressedSize = LoaderUtil::GetInt( readBuffer.GetData(24) );
     this->m_uncompressedSize = LoaderUtil::GetInt( readBuffer.GetData(28) );
     

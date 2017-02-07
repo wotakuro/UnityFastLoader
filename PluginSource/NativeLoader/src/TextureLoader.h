@@ -1,5 +1,14 @@
 #include <stdlib.h>
 
+#define USE_OPEN_GL
+
+#ifdef USE_OPEN_GL
+// if use OpenGL
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
+
+#endif
+
 namespace NativeLoader{
     class FileLoaderStream;
     class MemoryBuffer;
@@ -53,11 +62,17 @@ namespace NativeLoader{
 		inline int GetBodySize()const{
 			return m_uncompressedSize;
 		}
+        
 
 
 		void* GetRawData()const;
-
+#ifdef USE_OPEN_GL
+        GLuint CreateRawTextureWithOpenGL();
+#endif
+        
         bool LoadTexture( FileLoaderStream &stream, MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
+        
+        
 	private:
 		bool LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBuffer);
         bool LoadBody( FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
