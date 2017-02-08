@@ -30,6 +30,9 @@ public class TestLoadComponent : MonoBehaviour {
 
 		float stTime = Time.realtimeSinceStartup;
 
+		if (this.nativeTexture != null) {
+			this.nativeTexture.Dispose ();
+		}
 		loader.LoadToBuffer(path);
 		float loadTime = Time.realtimeSinceStartup;
 		System.GC.Collect ();

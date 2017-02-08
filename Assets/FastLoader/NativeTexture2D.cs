@@ -3,7 +3,7 @@ using System;
 
 namespace FastLoader
 {
-	public class NativeTexture2D : UnityEngine.Object ,System.IDisposable
+	public class NativeTexture2D : System.IDisposable
 	{
 
 		private Texture2D texture = null;
@@ -24,6 +24,15 @@ namespace FastLoader
 			if (nativePtr != IntPtr.Zero) {
 				TextureLoader.ReleaseTexture (nativePtr);
 			}
+			nativePtr = IntPtr.Zero;
+		}
+		~NativeTexture2D(){
+			Dispose ();
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			Dispose ();
 		}
 	}
 }
