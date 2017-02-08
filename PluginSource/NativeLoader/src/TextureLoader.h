@@ -4,8 +4,17 @@
 
 #ifdef USE_OPEN_GL
 // if use OpenGL
+#if UNITY_IOS
 #include <OpenGLES/ES3/gl.h>
 #include <OpenGLES/ES3/glext.h>
+#endif
+
+#if UNITY_ANDROID
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#endif
 
 #endif
 

@@ -81,7 +81,7 @@ extern "C"{
         if( g_nativeTextureLoader ){
             return g_nativeTextureLoader->CreateRawTextureWithOpenGL();
         }
-        return NULL;
+		return (GLuint)0;
     }
     
     void FastLoad_Texture_Delete_OpenGL(GLuint texture){

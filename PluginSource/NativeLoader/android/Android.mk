@@ -5,11 +5,14 @@ LOCAL_PATH := $(call my-dir)
 # override strip command to strip all symbols from output library; no need to ship with those..
 # cmd-strip = $(TOOLCHAIN_PREFIX)strip $1 
 
+
 LOCAL_ARM_MODE  := arm
 LOCAL_PATH      := $(NDK_PROJECT_PATH)
 LOCAL_MODULE    := nativeloader
 LOCAL_CFLAGS    := -Werror -DUNITY_ANDROID
 LOCAL_SRC_FILES := ../src/3rd_party/lz4/lz4.c
+
+LOCAL_LDLIBS     := -lEGL -lGLESv1_CM -lGLESv2
 
 ifeq ($(HOST_OS),windows)
     LOCAL_SRC_FILES += $(shell dir "$(LOCAL_PATH)/../src/*.cpp" /b /s /a-d) 
