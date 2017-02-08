@@ -72,6 +72,10 @@ extern "C"{
         }
         return NULL;
     }
+    bool FastLoad_Texture_NativeCreateSupport(int format){
+        return TextureLoader::IsNativeCreateSupport(format);
+    }
+    
 #ifdef USE_OPEN_GL
     GLuint FastLoad_Texture_Create_OpenGL(){
         if( g_nativeTextureLoader ){

@@ -38,13 +38,15 @@ GLuint TextureLoader::CreateRawTextureWithOpenGL(){
     glBindTexture(GL_TEXTURE_2D, tex);
     
     
-     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-     m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
-     m_bodyPtr);
-    /*
-    glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG,
-                           m_width, m_height, 0, m_uncompressedSize , m_bodyPtr);
-     */
+    if( IsCompressedFormat(m_format)){
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, GetGLCompressedFormat(m_format),
+                               m_width, m_height, 0, m_uncompressedSize , m_bodyPtr);
+    }else{
+        glTexImage2D(GL_TEXTURE_2D, 0, GetGLInternalFormat(m_format),
+                     m_width, m_height, 0, GetGLFormat(m_format),
+                     GL_UNSIGNED_BYTE,
+                     m_bodyPtr);
+    }
     
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -106,4 +108,140 @@ bool TextureLoader::LoadBody(FileLoaderStream &stream,MemoryBuffer &readBuffer,M
     }
     return true;
 }
+
+
+
+
+/** Unity FormatList
+ Alpha8             1   (ios/android)
+ ARGB4444           2   (ios/android)
+ RGB24              3   (ios/android)
+ RGBA32             4   (ios/android)
+ ARGB32             5   (ios/android)
+ RGB565             7   (ios/android)
+ RGBA4444           13  (ios/android)
+ PVRTC_RGB2         30  (ios)
+ PVRTC_RGBA2        31  (ios)
+ PVRTC_RGB4         32  (ios)
+ PVRTC_RGBA4        33  (ios)
+ ETC_RGB4           34  (android)
+ ETC2_RGB           45  (android)
+ ETC2_RGBA1         46  (android)
+ ETC2_RGBA8         47  (android)
+ */
+
+bool TextureLoader::IsNativeCreateSupport(int format){
+    // ios/android
+    switch( format){
+        case 1://Alpha8
+        case 3://RGB24
+        case 4://RGBA32
+        case 7://RGB565
+        case 13://RGBA4444
+            return true;
+    }
+#if UNITY_IOS
+    switch( format){
+        case 30://PVRTC_RGB2
+        case 31://PVRTC_RGBA2
+        case 32://PVRTC_RGB4
+        case 33://PVRTC_RGBA4
+            return true;
+    }
+#endif
+    
+#if UNITY_ANDROID
+    switch( format){
+        case 34://ETC_RGB4
+        case 45://ETC2_RGB
+        case 46://ETC2_RGBA1
+        case 47://ETC2_RGBA8
+            return true;
+    }
+#endif
+    
+    return false;
+}
+
+
+bool IsCompressedFormat(int format){
+    
+    switch( format){
+        case 1://Alpha8
+        case 3://RGB24
+        case 4://RGBA32
+        case 7://RGB565
+        case 13://RGBA4444
+            return false;
+    }
+    return true;
+}
+
+#ifdef USE_OPEN_GL
+int TextureLoader::GetGLCompressedFormat(int format){
+#if UNITY_IOS
+    switch( format){
+        case 30://PVRTC_RGB2
+            return GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+        case 31://PVRTC_RGBA2
+            return GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        case 32://PVRTC_RGB4
+            return GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+        case 33://PVRTC_RGBA4
+            return GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+    }
+#endif
+    
+#if UNITY_ANDROID
+    switch( format){
+        case 34://ETC_RGB4
+            return GL_ETC1_RGB8_OES;
+        case 45://ETC2_RGB
+            return GL_COMPRESSED_RGB8_ETC2;
+        case 46://ETC2_RGBA1
+            return GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2;
+        case 47://ETC2_RGBA8;
+            return GL_COMPRESSED_RGBA8_ETC2_EAC;
+    }
+#endif
+
+    return 0;
+}
+
+int TextureLoader::GetGLInternalFormat(int format){
+    switch( format){
+        case 1://Alpha8
+            return GL_R8;
+        case 3://RGB24
+            return GL_RGB;
+        case 4://RGBA32
+            return GL_RGBA;
+        case 7://RGB565
+            return GL_RGB565;
+        case 13://RGBA4444
+            return GL_RGBA16I;
+    }
+
+    return 0;
+}
+
+int TextureLoader::GetGLFormat(int format){
+    // ios/android
+    switch( format){
+        case 1://Alpha8
+            return GL_R8;
+        case 3://RGB24
+            return GL_RGB;
+        case 4://RGBA32
+            return GL_RGBA;
+        case 7://RGB565
+            return GL_RGB565;
+        case 13://RGBA4444
+            return GL_RGBA16I;
+    }
+    return 0;
+}
+
+#endif
+
 

@@ -71,6 +71,9 @@ namespace NativeLoader{
 #endif
         bool LoadTexture( FileLoaderStream &stream, MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
         
+        
+        static bool IsNativeCreateSupport(int format);
+        
 	private:
 		bool LoadFileHeader(FileLoaderStream &stream,MemoryBuffer &readBuffer);
         bool LoadBody( FileLoaderStream &stream,MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
@@ -126,6 +129,7 @@ namespace NativeLoader{
          ETC_RGB4_3DS       60
          ETC_RGBA8_3DS      61
          */
+        
         static bool IsCompressedFormat(int format);
 
 #ifdef USE_OPEN_GL
