@@ -21,8 +21,8 @@
 		C59943CF1E4225F300544FFA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "lib/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
+			dstPath = "$(PROJECT_DIR)/lib/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 0;
 			files = (
 				C5B4C1BD1E4A315F00EA2353 /* libNativeLoader.a in CopyFiles */,
 			);
