@@ -87,6 +87,12 @@ namespace FastLoader
 
 		[DllImport( DllImportName )]
 		static extern IntPtr FastLoad_Texture_Create_OpenGL();
+
+		[DllImport( DllImportName )]
+		static extern bool FastLoad_Texture_NativeCreateSupport(int format);
+
+		[DllImport( DllImportName )]
+		static extern void FastLoad_Texture_Delete_OpenGL(IntPtr texture);
 #endif
 
 
@@ -100,6 +106,14 @@ namespace FastLoader
 			#endif
             this.textureData = new TextureData();
         }
+
+		public static void ReleaseTexture( IntPtr texturePtr){
+			#if NATIVE_PLUGIN_LOAD
+			if( texturePtr != IntPtr.Zero ){
+				FastLoad_Texture_Delete_OpenGL ( texturePtr);
+			}
+			#endif
+		}
 
         public void LoadToBuffer(string path)
         {
@@ -128,24 +142,36 @@ namespace FastLoader
             }
 
 			Texture2D tex = null;
-			#if NATIVE_PLUGIN_LOAD
-			// native load
-
-			tex = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
-				textureData.UnityFormat,textureData.mipmap,textureData.lenear,
-				FastLoad_Texture_Create_OpenGL() );
-			tex.UpdateExternalTexture(tex.GetNativeTexturePtr() );
-			tex.filterMode = FilterMode.Bilinear;
-			tex.wrapMode = TextureWrapMode.Repeat;
-			#else
-            tex = new Texture2D(textureData.width, textureData.heght, 
+			tex = new Texture2D(textureData.width, textureData.heght, 
                 textureData.UnityFormat,textureData.mipmap,textureData.lenear);
 
             tex.LoadRawTextureData(textureData.rawData, textureData.dataSize);
 			tex.Apply(textureData.mipmap,true);
-			#endif
-            return tex;
+
+			return tex;
         }
+
+		public NativeTexture2D CreateNativeTextureFromBuffer(){
+			Texture2D texture = null;
+			IntPtr ptr = IntPtr.Zero;
+			#if NATIVE_PLUGIN_LOAD
+			// native load
+			if( ! textureData.mipmap && FastLoad_Texture_NativeCreateSupport( textureData.format) ){
+				ptr = FastLoad_Texture_Create_OpenGL();
+				texture = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
+					textureData.UnityFormat,textureData.mipmap,textureData.lenear,
+					ptr );
+				texture.filterMode = FilterMode.Bilinear;
+				texture.wrapMode = TextureWrapMode.Repeat;
+			}
+			#endif
+			if (texture == null) {
+				texture = CreateTexture2DFromBuffer ();
+			}
+
+
+			return new NativeTexture2D (texture, ptr);
+		}
 
         private bool LoadDataFromBuffer()
         {

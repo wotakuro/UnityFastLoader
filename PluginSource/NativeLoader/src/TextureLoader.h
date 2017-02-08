@@ -68,6 +68,8 @@ namespace NativeLoader{
 		void* GetRawData()const;
 #ifdef USE_OPEN_GL
         GLuint CreateRawTextureWithOpenGL();
+        void ReleaseTexture( GLuint texture);
+                            
 #endif
         bool LoadTexture( FileLoaderStream &stream, MemoryBuffer &readBuffer,MemoryBuffer *deflateBuffer);
         

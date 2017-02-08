@@ -57,6 +57,11 @@ GLuint TextureLoader::CreateRawTextureWithOpenGL(){
     glBindTexture(GL_TEXTURE_2D, curGLTex);
     return tex;
 }
+
+void TextureLoader::ReleaseTexture( GLuint texture){
+    glDeleteTextures(1, &texture);
+}
+
 #endif
 
 
@@ -164,7 +169,7 @@ bool TextureLoader::IsNativeCreateSupport(int format){
 }
 
 
-bool IsCompressedFormat(int format){
+bool TextureLoader::IsCompressedFormat(int format){
     
     switch( format){
         case 1://Alpha8

@@ -83,6 +83,12 @@ extern "C"{
         }
         return NULL;
     }
+    
+    void FastLoad_Texture_Delete_OpenGL(GLuint texture){
+        if( g_nativeTextureLoader ){
+            g_nativeTextureLoader->ReleaseTexture(texture);
+        }
+    }
 #endif
 	//-----------
 }
