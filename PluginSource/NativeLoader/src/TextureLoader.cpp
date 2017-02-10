@@ -3,6 +3,18 @@
 #include "MemoryBuffer.h"
 #include "LoaderUtil.h"
 
+
+#if UNITY_ANDROID
+// Android defines from open glES3
+#define GL_COMPRESSED_RGB8_ETC2                          0x9274
+#define GL_COMPRESSED_SRGB8_ETC2                         0x9275
+#define GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2      0x9276
+#define GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2     0x9277
+#define GL_COMPRESSED_RGBA8_ETC2_EAC                     0x9278
+#define GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC              0x9279
+
+#endif
+
 using namespace NativeLoader;
 
 TextureLoader::TextureLoader():
@@ -216,7 +228,7 @@ int TextureLoader::GetGLCompressedFormat(int format){
 int TextureLoader::GetGLInternalFormat(int format){
     switch( format){
         case 1://Alpha8
-            return GL_R8;
+			return GL_ALPHA;
         case 3://RGB24
             return GL_RGB;
         case 4://RGBA32
@@ -224,7 +236,7 @@ int TextureLoader::GetGLInternalFormat(int format){
         case 7://RGB565
             return GL_RGB565;
         case 13://RGBA4444
-            return GL_RGBA16I;
+			return GL_RGBA;
     }
 
     return 0;
@@ -234,7 +246,7 @@ int TextureLoader::GetGLFormat(int format){
     // ios/android
     switch( format){
         case 1://Alpha8
-            return GL_R8;
+			return GL_ALPHA;
         case 3://RGB24
             return GL_RGB;
         case 4://RGBA32
@@ -242,7 +254,7 @@ int TextureLoader::GetGLFormat(int format){
         case 7://RGB565
             return GL_RGB565;
         case 13://RGBA4444
-            return GL_RGBA16I;
+			return GL_RGBA;
     }
     return 0;
 }

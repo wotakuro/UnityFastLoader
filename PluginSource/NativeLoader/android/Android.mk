@@ -12,7 +12,7 @@ LOCAL_MODULE    := nativeloader
 LOCAL_CFLAGS    := -Werror -DUNITY_ANDROID
 LOCAL_SRC_FILES := ../src/3rd_party/lz4/lz4.c
 
-LOCAL_LDLIBS     := -lEGL -lGLESv1_CM -lGLESv2
+LOCAL_LDLIBS     := -llog -lEGL -lGLESv2
 
 ifeq ($(HOST_OS),windows)
     LOCAL_SRC_FILES += $(shell dir "$(LOCAL_PATH)/../src/*.cpp" /b /s /a-d) 
@@ -20,6 +20,5 @@ else
     LOCAL_SRC_FILES += $(shell find $(LOCAL_PATH)/../src/ -name *.cpp) 
 endif
 
-LOCAL_LDLIBS    := -llog
 
 include $(BUILD_SHARED_LIBRARY)
