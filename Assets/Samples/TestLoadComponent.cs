@@ -35,7 +35,6 @@ public class TestLoadComponent : MonoBehaviour {
 		}
 		loader.LoadToBuffer(path);
 		float loadTime = Time.realtimeSinceStartup;
-		System.GC.Collect ();
 		this.nativeTexture = loader.CreateNativeTextureFromBuffer();
 		float endTime = Time.realtimeSinceStartup;
 
@@ -74,10 +73,13 @@ public class TestLoadComponent : MonoBehaviour {
 	private void PrintTexture(Texture2D texture,int num,float stTime , float loadTime,float endTime){
 		var sb = new System.Text.StringBuilder(64);
 		sb.Append ("Num ").Append (num).Append ("\n");
-		sb.Append("Texture ").Append( texture.width ).Append( "*").Append( texture.height).Append( "\n" )
-			.Append(texture.format ).Append( ":").Append( texture.mipmapCount)
-			.Append("\nloadtime:") .Append( (loadTime - stTime) )
-			.Append("\nAlltime:") .Append( (endTime - stTime) );
+        if (texture != null)
+        {
+            sb.Append("Texture ").Append(texture.width).Append("*").Append(texture.height).Append("\n")
+                .Append(texture.format).Append(":").Append(texture.mipmapCount)
+                .Append("\nloadtime:").Append((loadTime - stTime))
+                .Append("\nAlltime:").Append((endTime - stTime));
+        }
 		this.textObj.text = sb.ToString();
 
 	}

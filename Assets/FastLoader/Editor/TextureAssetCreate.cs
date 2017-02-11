@@ -84,6 +84,8 @@ namespace FastLoader
             byte[] crc32 = new byte[4];
             FastLoaderUtil.GetByteArrayFromInt(Crc32.GetValue(fileData, 0, fileData.Length), crc32, 0);
             stream.Write(crc32, 0, crc32.Length);
+
+            Debug.Log("format " + texture.format +"::"+ (int)texture.format);
         }
 
 

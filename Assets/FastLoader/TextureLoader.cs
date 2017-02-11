@@ -115,7 +115,7 @@ namespace FastLoader
 			#endif
 		}
 
-        public void LoadToBuffer(string path)
+        public bool LoadToBuffer(string path)
         {
 			#if NATIVE_PLUGIN_LOAD
 			FastLoad_Texture_LoadFile( path );
@@ -124,7 +124,9 @@ namespace FastLoader
             {
                 int read = fs.Read(bufferData, 0, bufferData.Length);
             }
-			#endif
+            #endif
+            bool result = LoadTextureFormatDataFromBuffer();
+            return result;
         }
 
 
@@ -135,12 +137,6 @@ namespace FastLoader
 
 		public Texture2D CreateTexture2DFromBuffer()
         {
-            bool result = LoadDataFromBuffer();
-            if (!result)
-            {
-                return null;
-            }
-
 			Texture2D tex = null;
 			tex = new Texture2D(textureData.width, textureData.heght, 
                 textureData.UnityFormat,textureData.mipmap,textureData.lenear);
@@ -151,11 +147,13 @@ namespace FastLoader
 			return tex;
         }
 
-		public NativeTexture2D CreateNativeTextureFromBuffer(){
+        public NativeTexture2D CreateNativeTextureFromBuffer()
+        {
 			Texture2D texture = null;
 			IntPtr ptr = IntPtr.Zero;
 			#if NATIVE_PLUGIN_LOAD
 			// native load
+            Debug.Log( "format " + textureData.format +" :: "+ FastLoad_Texture_NativeCreateSupport( textureData.format) +"  mipmap:" + textureData.mipmap );
 			if( ! textureData.mipmap && FastLoad_Texture_NativeCreateSupport( textureData.format) ){
 				ptr = FastLoad_Texture_Create_OpenGL();
 				texture = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
@@ -164,8 +162,8 @@ namespace FastLoader
 				texture.filterMode = FilterMode.Bilinear;
 				texture.wrapMode = TextureWrapMode.Repeat;
 			}
-			#endif
-			if (texture == null) {
+#endif
+            if (texture == null) {
 				texture = CreateTexture2DFromBuffer ();
 			}
 
@@ -173,7 +171,7 @@ namespace FastLoader
 			return new NativeTexture2D (texture, ptr);
 		}
 
-        private bool LoadDataFromBuffer()
+        private bool LoadTextureFormatDataFromBuffer()
         {
 			#if NATIVE_PLUGIN_LOAD
 			textureData.width = FastLoad_Texture_GetWidth();

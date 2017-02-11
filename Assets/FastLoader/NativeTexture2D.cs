@@ -21,6 +21,10 @@ namespace FastLoader
 
 		public void Dispose ()
 		{
+            if (this.texture)
+            {
+                UnityEngine.Object.Destroy(this.texture);
+            }
 			if (nativePtr != IntPtr.Zero) {
 				TextureLoader.ReleaseTexture (nativePtr);
 			}
