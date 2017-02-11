@@ -19,7 +19,7 @@ ExportedObj/
 *.svd
 
 PluginSource/NativeLoader/android/obj/*
-PluginSource/NativeLoader/android/lib/*
+PluginSource/NativeLoader/android/lib/**
 PluginSource/NativeLoader/iOS/NativeLoader/lib/
 
 
