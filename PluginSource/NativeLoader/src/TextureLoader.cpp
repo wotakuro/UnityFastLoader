@@ -131,10 +131,8 @@ bool TextureLoader::LoadBody(FileLoaderStream &stream,MemoryBuffer &readBuffer,M
 
 /** Unity FormatList
  Alpha8             1   (ios/android)
- ARGB4444           2   (ios/android)
  RGB24              3   (ios/android)
  RGBA32             4   (ios/android)
- ARGB32             5   (ios/android)
  RGB565             7   (ios/android)
  RGBA4444           13  (ios/android)
  PVRTC_RGB2         30  (ios)
