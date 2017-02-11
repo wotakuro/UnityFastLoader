@@ -19,8 +19,8 @@ ExportedObj/
 *.svd
 
 PluginSource/NativeLoader/android/obj/*
-PluginSource/NativeLoader/android/lib/**
-PluginSource/NativeLoader/iOS/NativeLoader/lib/
+PluginSource/NativeLoader/android/libs/*
+PluginSource/NativeLoader/iOS/NativeLoader/lib/*
 
 
 # Unity3D generated meta files
