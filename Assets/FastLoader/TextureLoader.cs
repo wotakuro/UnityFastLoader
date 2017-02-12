@@ -162,7 +162,7 @@ namespace FastLoader
 				texture.filterMode = FilterMode.Bilinear;
 				texture.wrapMode = TextureWrapMode.Repeat;
 			}
-#endif
+            #endif
             if (texture == null) {
 				texture = CreateTexture2DFromBuffer ();
 			}

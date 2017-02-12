@@ -15,10 +15,11 @@ public class TestLoadComponent : MonoBehaviour {
 
 	private FastLoader.NativeTexture2D nativeTexture;
 
+    private const string BinaryTextureData = "test.png.bin";
+
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(CopyData("test.jpg.bin"));
-		StartCoroutine(CopyData("test.bundle"));
+        StartCoroutine(CopyData(BinaryTextureData));
 		StartCoroutine(CopyData("reuse.jpg.bin"));
 	}
 
@@ -26,7 +27,7 @@ public class TestLoadComponent : MonoBehaviour {
     FastLoader.TextureLoader loader = new FastLoader.TextureLoader();
 
 	public void NativeLoadTest(){
-		string path = Path.Combine( Application.temporaryCachePath , "test.jpg.bin");
+        string path = Path.Combine(Application.temporaryCachePath, BinaryTextureData);
 
 		float stTime = Time.realtimeSinceStartup;
 
@@ -54,7 +55,7 @@ public class TestLoadComponent : MonoBehaviour {
 		if (lastLoad != null) {
 			Object.Destroy (lastLoad);
 		}
-        string path = Path.Combine( Application.temporaryCachePath , "test.jpg.bin");
+        string path = Path.Combine(Application.temporaryCachePath, BinaryTextureData);
 
         float stTime = Time.realtimeSinceStartup;
 
@@ -76,7 +77,7 @@ public class TestLoadComponent : MonoBehaviour {
         if (texture != null)
         {
             sb.Append("Texture ").Append(texture.width).Append("*").Append(texture.height).Append("\n")
-                .Append(texture.format).Append(":").Append(texture.mipmapCount)
+                .Append(texture.format).Append(":").Append(texture.mipmapCount).Append(" mipmap:").Append(texture.mipmapCount)
                 .Append("\nloadtime:").Append((loadTime - stTime))
                 .Append("\nAlltime:").Append((endTime - stTime));
         }
@@ -118,7 +119,7 @@ public class TestLoadComponent : MonoBehaviour {
 	IEnumerator CopyData(string file)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        string path = Path.Combine(Application.streamingAssetsPath, "test.jpg.bin");
+        string path = Path.Combine(Application.streamingAssetsPath, file);
 #else
 		string path = "file://" + Path.Combine(Application.streamingAssetsPath, file );
 #endif
