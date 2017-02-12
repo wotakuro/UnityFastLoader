@@ -56,7 +56,7 @@ GLuint TextureLoader::CreateRawTextureWithOpenGL(){
     }else{
         glTexImage2D(GL_TEXTURE_2D, 0, GetGLInternalFormat(m_format),
                      m_width, m_height, 0, GetGLFormat(m_format),
-                     GL_UNSIGNED_BYTE,
+					 GetGLType(m_format) ,
                      m_bodyPtr);
     }
     
@@ -232,12 +232,29 @@ int TextureLoader::GetGLInternalFormat(int format){
         case 4://RGBA32
             return GL_RGBA;
         case 7://RGB565
-            return GL_RGB565;
+			return GL_RGB;
         case 13://RGBA4444
 			return GL_RGBA;
     }
 
     return 0;
+}
+
+
+int TextureLoader::GetGLType(int format){
+	switch (format){
+	case 1://Alpha8
+		return GL_UNSIGNED_BYTE;
+	case 3://RGB24
+		return GL_UNSIGNED_BYTE;
+	case 4://RGBA32
+		return GL_UNSIGNED_BYTE;
+	case 7://RGB565
+		return GL_UNSIGNED_SHORT_5_6_5;
+	case 13://RGBA4444
+		return GL_UNSIGNED_SHORT_4_4_4_4;
+	}
+	return GL_UNSIGNED_BYTE;
 }
 
 int TextureLoader::GetGLFormat(int format){
@@ -250,7 +267,7 @@ int TextureLoader::GetGLFormat(int format){
         case 4://RGBA32
             return GL_RGBA;
         case 7://RGB565
-            return GL_RGB565;
+			return GL_RGB;
         case 13://RGBA4444
 			return GL_RGBA;
     }

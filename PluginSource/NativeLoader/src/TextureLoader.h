@@ -147,6 +147,7 @@ namespace NativeLoader{
         static int GetGLCompressedFormat(int format);
 
         static int GetGLInternalFormat(int format);
+		static int GetGLType(int format);
         static int GetGLFormat(int format);
 #endif
     };
