@@ -22,7 +22,6 @@ public class MeshCheckEditor : EditorWindow
             return;
         }
 
-
         scroll = EditorGUILayout.BeginScrollView(scroll);
 
         LabelField("vertexCount	    " , ((mesh.vertexCount == null) ? "null" : mesh.vertexCount.ToString()));
