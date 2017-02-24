@@ -10,6 +10,11 @@ namespace FastLoader
             0x46,0x53,0x54,0x54,0x45,0x58,0x00,0x00,
         };
 
+        // todo
+        public static readonly byte[] FastMeshPrefabHeader = new byte[]{
+            0x46,0x53,0x54,0x54,0x45,0x58,0x00,0x00,
+        };
+
         public static readonly byte[] FastDatarArchiveHeader = new byte[]{
             0x46,0x53,0x54,0x41,0x52,0x43,0x00,0x00
         };
@@ -32,27 +37,16 @@ namespace FastLoader
             return val;
         }
 
-        public static int GetFlagInt(bool compress,bool mipmap,bool lenear)
+
+        public static void GetFloatFromByteArray(float val, byte[] writeBuf, int index)
         {
-            int val = 0;
-            if (compress) { val |= 0x01; }
-            if (mipmap) { val |= 0x02; }
-            if (lenear) { val |= 0x04; }
-            return val;
+            var bytes = System.BitConverter.GetBytes(val);
+            for (int i = 0; i < 4; ++i)
+            {
+                writeBuf[i + index] = bytes[i];
+            }
         }
 
-        public static bool GetCompressFromFlag(int val)
-        {
-            return ((val & 0x01) != 0);
-        }
-        public static bool GetMipmapFromFlag(int val)
-        {
-            return ((val & 0x02) != 0);
-        }
-        public static bool GetLenearFromFlag(int val)
-        {
-            return ((val & 0x04) != 0);
-        }
 
 
         public static bool CheckHeader(byte[] data, int index,byte [] header)

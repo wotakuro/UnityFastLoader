@@ -25,21 +25,21 @@ namespace FastLoader
         {
             get
             {
-                return FastLoaderUtil.GetCompressFromFlag(this.flags);
+                return TextureLoaderUtil.GetCompressFromFlag(this.flags);
             }
         }
         public bool mipmap
         {
             get
             {
-                return FastLoaderUtil.GetMipmapFromFlag(this.flags);
+                return TextureLoaderUtil.GetMipmapFromFlag(this.flags);
             }
         }
         public bool lenear
         {
             get
             {
-                return FastLoaderUtil.GetLenearFromFlag(this.flags);
+                return TextureLoaderUtil.GetLenearFromFlag(this.flags);
             }
         }
         public IntPtr rawData;

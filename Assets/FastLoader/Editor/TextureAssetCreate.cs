@@ -67,7 +67,7 @@ namespace FastLoader
             }
 			byte[] fileData = new byte[writeDataSize + 32 ];
 
-            int flag = FastLoaderUtil.GetFlagInt(isCompress,(texture.mipmapCount > 1), (texture.filterMode != FilterMode.Point));
+            int flag = TextureLoaderUtil.GetFlagInt(isCompress, (texture.mipmapCount > 1), (texture.filterMode != FilterMode.Point));
 
             // write header
             System.Array.Copy(FastLoaderUtil.FastTextureHeader, 0, fileData, 0, FastLoaderUtil.FastTextureHeader.Length);
