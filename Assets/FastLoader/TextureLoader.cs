@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.Rendering;
 
 using System.IO;
 using System.Runtime.InteropServices;
@@ -153,14 +154,16 @@ namespace FastLoader
 			IntPtr ptr = IntPtr.Zero;
 			#if NATIVE_PLUGIN_LOAD
 			// native load
-            Debug.Log( "format " + textureData.format +" :: "+ FastLoad_Texture_NativeCreateSupport( textureData.format) +"  mipmap:" + textureData.mipmap );
-			if( ! textureData.mipmap && FastLoad_Texture_NativeCreateSupport( textureData.format) ){
-				ptr = FastLoad_Texture_Create_OpenGL();
-				texture = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
-					textureData.UnityFormat,textureData.mipmap,textureData.lenear,
-					ptr );
-				texture.filterMode = FilterMode.Bilinear;
-				texture.wrapMode = TextureWrapMode.Repeat;
+			if( SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2 ||
+				SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 ){
+				if( ! textureData.mipmap && FastLoad_Texture_NativeCreateSupport( textureData.format) ){
+					ptr = FastLoad_Texture_Create_OpenGL();
+					texture = Texture2D.CreateExternalTexture(textureData.width, textureData.heght,
+						textureData.UnityFormat,textureData.mipmap,textureData.lenear,
+						ptr );
+					texture.filterMode = FilterMode.Bilinear;
+					texture.wrapMode = TextureWrapMode.Repeat;
+				}
 			}
             #endif
             if (texture == null) {
